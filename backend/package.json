@@ -1,0 +1,19 @@
+{
+  "name": "raahi-email-backend",
+  "version": "1.0.0",
+  "description": "Raahi email template API — render and send transactional emails",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "handlebars": "^4.7.8",
+    "nodemailer": "^6.10.0",
+    "zod": "^3.24.2"
+  }
+}
