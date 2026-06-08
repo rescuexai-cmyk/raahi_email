@@ -68,10 +68,14 @@ function getSmtpConfig() {
     };
   }
 
+  const port = Number(process.env.SMTP_PORT) || 587;
+  const secure =
+    process.env.SMTP_SECURE === 'true' || (process.env.SMTP_SECURE !== 'false' && port === 465);
+
   return {
     host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: process.env.SMTP_SECURE === 'true',
+    port,
+    secure,
     user: process.env.SMTP_USER || SUPPORT_EMAIL,
     pass: process.env.SMTP_PASS,
   };

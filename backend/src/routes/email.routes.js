@@ -31,7 +31,11 @@ router.get('/smtp/status', async (_req, res) => {
           ? 'Resend API key is set but connection failed. Check RESEND_API_KEY in Vercel.'
           : !config.passwordConfigured
             ? 'SMTP_PASS is missing in Vercel. Add it under Settings → Environment Variables, then redeploy.'
-            : 'GoDaddy SMTP often blocks Vercel. Use RESEND_API_KEY instead (free at resend.com) — still sends from contactus@raahionrescue.com.',
+            : err.message.includes('Greeting never received') ||
+                err.message.includes('ECONNREFUSED') ||
+                err.message.includes('ETIMEDOUT')
+              ? 'GoDaddy blocks Vercel on port 465. Switch to RESEND_API_KEY (recommended), or try SMTP_PORT=587 and SMTP_SECURE=false in Vercel.'
+              : 'GoDaddy SMTP often blocks Vercel. Use RESEND_API_KEY instead (free at resend.com) — still sends from contactus@raahionrescue.com.',
     });
   }
 });
