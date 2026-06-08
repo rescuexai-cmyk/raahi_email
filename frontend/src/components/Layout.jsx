@@ -13,7 +13,9 @@ export default function Layout({ smtpStatus, children }) {
             <span className="status-dot" />
             {smtpStatus.connected
               ? `SMTP connected (${smtpStatus.smtp?.host}:${smtpStatus.smtp?.port})`
-              : 'SMTP offline — start Mailpit for local sending'}
+              : window.location.hostname === 'localhost'
+                ? 'SMTP offline — start Mailpit for local sending'
+                : 'SMTP offline — add SMTP_* environment variables in Vercel and redeploy'}
           </div>
         )}
       </header>

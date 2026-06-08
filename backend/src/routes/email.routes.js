@@ -16,7 +16,9 @@ router.get('/smtp/status', async (_req, res, next) => {
     res.status(503).json({
       connected: false,
       error: err.message,
-      hint: 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env',
+      hint: process.env.VERCEL
+        ? 'Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and MAIL_FROM in Vercel environment variables, then redeploy.'
+        : 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env',
     });
   }
 });
@@ -47,8 +49,9 @@ router.post('/send', async (req, res, next) => {
   } catch (err) {
     if (err.code === 'ECONNREFUSED') {
       err.status = 503;
-      err.message =
-        'Could not connect to SMTP server. Start Mailpit locally or configure SMTP in .env';
+      err.message = process.env.VERCEL
+        ? 'Could not connect to SMTP server. Check SMTP_* environment variables in Vercel.'
+        : 'Could not connect to SMTP server. Start Mailpit locally or configure SMTP in .env';
     }
     next(err);
   }
