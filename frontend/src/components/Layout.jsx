@@ -15,7 +15,7 @@ export default function Layout({ smtpStatus, children }) {
               ? `SMTP connected (${smtpStatus.smtp?.host}:${smtpStatus.smtp?.port})`
               : window.location.hostname === 'localhost'
                 ? 'SMTP offline — start Mailpit for local sending'
-                : 'SMTP offline — add SMTP_PASS (GoDaddy password for support@raahionrescue.com) in Vercel and redeploy'}
+                : 'SMTP offline — add SMTP_PASS (GoDaddy password for contactus@raahionrescue.com) in Vercel and redeploy'}
           </div>
         )}
       </header>

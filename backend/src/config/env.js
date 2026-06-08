@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 const PRODUCTION_DOMAIN = 'https://www.raahionrescue.com';
-const SUPPORT_EMAIL = 'support@raahionrescue.com';
+const SUPPORT_EMAIL = 'contactus@raahionrescue.com';
 
 function parseOrigins(value) {
   return value

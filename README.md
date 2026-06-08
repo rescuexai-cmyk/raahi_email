@@ -97,7 +97,7 @@ This repo uses [Vercel Services](https://vercel.com/docs/services) to deploy fro
 
 | Variable | Required | Value |
 |----------|----------|-------|
-| `SMTP_PASS` | **Yes** | GoDaddy password for `support@raahionrescue.com` |
+| `SMTP_PASS` | **Yes** | GoDaddy password for `contactus@raahionrescue.com` |
 
 Everything else is pre-configured for **raahionrescue.com** on GoDaddy:
 
@@ -105,8 +105,8 @@ Everything else is pre-configured for **raahionrescue.com** on GoDaddy:
 |---------|------------|
 | `SMTP_HOST` | `smtpout.secureserver.net` |
 | `SMTP_PORT` | `465` |
-| `SMTP_USER` | `support@raahionrescue.com` |
-| `MAIL_FROM` | `Raahi <support@raahionrescue.com>` |
+| `SMTP_USER` | `contactus@raahionrescue.com` |
+| `MAIL_FROM` | `Raahi <contactus@raahionrescue.com>` |
 | `COMPANY_LOGO_URL` | `https://www.raahionrescue.com/raahi-logo.png` |
 | `CORS_ORIGINS` | `raahionrescue.com` + Vercel URL |
 
