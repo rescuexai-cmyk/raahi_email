@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { env } from '../config/env.js';
 import { previewEmail, sendEmail, verifySmtpConnection } from '../services/email.service.js';
 import { validateEmailPayload, validatePreviewPayload } from '../validators/email.validator.js';
 
@@ -16,9 +17,10 @@ router.get('/smtp/status', async (_req, res, next) => {
     res.status(503).json({
       connected: false,
       error: err.message,
-      hint: process.env.VERCEL
-        ? 'Add SMTP_PASS (GoDaddy password for contactus@raahionrescue.com) in Vercel environment variables, then redeploy.'
-        : 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env',
+      smtp: { host: env.smtp.host, port: env.smtp.port, user: env.smtp.user },
+      hint: env.isDev
+        ? 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env'
+        : 'Add SMTP_PASS (GoDaddy password for contactus@raahionrescue.com) in Vercel, then redeploy. Try SMTP_PORT=587 and SMTP_SECURE=false if needed.',
     });
   }
 });
@@ -49,9 +51,9 @@ router.post('/send', async (req, res, next) => {
   } catch (err) {
     if (err.code === 'ECONNREFUSED') {
       err.status = 503;
-      err.message = process.env.VERCEL
-        ? 'Could not connect to GoDaddy SMTP. Check SMTP_PASS for contactus@raahionrescue.com in Vercel.'
-        : 'Could not connect to SMTP server. Start Mailpit locally or configure SMTP in .env';
+      err.message = env.isDev
+        ? 'Could not connect to SMTP server. Start Mailpit locally or configure SMTP in .env'
+        : `Could not connect to GoDaddy SMTP (${env.smtp.host}:${env.smtp.port}). Check SMTP_PASS in Vercel.`;
     }
     next(err);
   }

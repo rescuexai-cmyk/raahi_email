@@ -10,8 +10,16 @@ function parseOrigins(value) {
     .filter(Boolean);
 }
 
+function isLocalDev() {
+  return (
+    !process.env.VERCEL &&
+    !process.env.VERCEL_ENV &&
+    process.env.NODE_ENV !== 'production'
+  );
+}
+
 function isProduction() {
-  return Boolean(process.env.VERCEL);
+  return !isLocalDev();
 }
 
 function getAppOrigin() {
@@ -49,22 +57,23 @@ function getDefaultCorsOrigins() {
 }
 
 function getSmtpConfig() {
-  if (isProduction()) {
+  // Only use Mailpit when running locally without explicit SMTP_HOST
+  if (isLocalDev() && !process.env.SMTP_HOST) {
     return {
-      host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: process.env.SMTP_SECURE !== 'false',
-      user: process.env.SMTP_USER || SUPPORT_EMAIL,
-      pass: process.env.SMTP_PASS,
+      host: 'localhost',
+      port: Number(process.env.SMTP_PORT) || 1025,
+      secure: process.env.SMTP_SECURE === 'true',
+      user: process.env.SMTP_USER || undefined,
+      pass: process.env.SMTP_PASS || undefined,
     };
   }
 
   return {
-    host: process.env.SMTP_HOST || 'localhost',
-    port: Number(process.env.SMTP_PORT) || 1025,
+    host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+    port: Number(process.env.SMTP_PORT) || 587,
     secure: process.env.SMTP_SECURE === 'true',
-    user: process.env.SMTP_USER || undefined,
-    pass: process.env.SMTP_PASS || undefined,
+    user: process.env.SMTP_USER || SUPPORT_EMAIL,
+    pass: process.env.SMTP_PASS,
   };
 }
 
