@@ -93,17 +93,22 @@ This repo uses [Vercel Services](https://vercel.com/docs/services) to deploy fro
 1. Import [rescuexai-cmyk/raahi_email](https://github.com/rescuexai-cmyk/raahi_email) on Vercel
 2. Set **Application Preset** to **Services**
 3. Click **Refresh** (after `vercel.json` is in the repo)
-4. Add environment variables in Vercel → Settings → Environment Variables:
+4. Add **one** environment variable in Vercel → Settings → Environment Variables:
 
-| Variable | Required | Example |
-|----------|----------|---------|
-| `SMTP_HOST` | Yes | `smtp.resend.com` |
-| `SMTP_PORT` | Yes | `587` |
-| `SMTP_USER` | Yes | `resend` |
-| `SMTP_PASS` | Yes | your API key |
-| `MAIL_FROM` | Yes | `Raahi <hello@raahi.com>` |
-| `COMPANY_LOGO_URL` | No | auto-uses `https://<your-domain>/logos/raahi_logo.png` |
-| `CORS_ORIGINS` | No | auto-uses your Vercel URL |
+| Variable | Required | Value |
+|----------|----------|-------|
+| `SMTP_PASS` | **Yes** | GoDaddy password for `support@raahionrescue.com` |
+
+Everything else is pre-configured for **raahionrescue.com** on GoDaddy:
+
+| Setting | Auto value |
+|---------|------------|
+| `SMTP_HOST` | `smtpout.secureserver.net` |
+| `SMTP_PORT` | `465` |
+| `SMTP_USER` | `support@raahionrescue.com` |
+| `MAIL_FROM` | `Raahi <support@raahionrescue.com>` |
+| `COMPANY_LOGO_URL` | `https://www.raahionrescue.com/raahi-logo.png` |
+| `CORS_ORIGINS` | `raahionrescue.com` + Vercel URL |
 
 5. Click **Deploy**
 

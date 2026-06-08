@@ -7,7 +7,7 @@ const DEFAULT_FORM = {
   contentHtml:
     '<p>Your account is ready. Explore the platform and let us know if you need anything.</p>',
   ctaLabel: 'Get started',
-  ctaUrl: 'https://raahi.com/dashboard',
+  ctaUrl: 'https://www.raahionrescue.com',
 };
 
 export default function EmailForm({

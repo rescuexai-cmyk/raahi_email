@@ -17,7 +17,7 @@ router.get('/smtp/status', async (_req, res, next) => {
       connected: false,
       error: err.message,
       hint: process.env.VERCEL
-        ? 'Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and MAIL_FROM in Vercel environment variables, then redeploy.'
+        ? 'Add SMTP_PASS (GoDaddy password for support@raahionrescue.com) in Vercel environment variables, then redeploy.'
         : 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env',
     });
   }
@@ -50,7 +50,7 @@ router.post('/send', async (req, res, next) => {
     if (err.code === 'ECONNREFUSED') {
       err.status = 503;
       err.message = process.env.VERCEL
-        ? 'Could not connect to SMTP server. Check SMTP_* environment variables in Vercel.'
+        ? 'Could not connect to GoDaddy SMTP. Check SMTP_PASS for support@raahionrescue.com in Vercel.'
         : 'Could not connect to SMTP server. Start Mailpit locally or configure SMTP in .env';
     }
     next(err);
