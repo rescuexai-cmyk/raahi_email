@@ -93,22 +93,23 @@ This repo uses [Vercel Services](https://vercel.com/docs/services) to deploy fro
 1. Import [rescuexai-cmyk/raahi_email](https://github.com/rescuexai-cmyk/raahi_email) on Vercel
 2. Set **Application Preset** to **Services**
 3. Click **Refresh** (after `vercel.json` is in the repo)
-4. Add **one** environment variable in Vercel → Settings → Environment Variables:
+4. Add environment variables in Vercel → Settings → Environment Variables:
 
-| Variable | Required | Value |
-|----------|----------|-------|
-| `SMTP_PASS` | **Yes** | GoDaddy password for `contactus@raahionrescue.com` |
+**Recommended — Resend** (GoDaddy SMTP is often blocked on Vercel):
 
-Everything else is pre-configured for **raahionrescue.com** on GoDaddy:
+| Variable | Value |
+|----------|-------|
+| `RESEND_API_KEY` | API key from [resend.com](https://resend.com) |
 
-| Setting | Auto value |
-|---------|------------|
-| `SMTP_HOST` | `smtpout.secureserver.net` |
-| `SMTP_PORT` | `465` |
-| `SMTP_USER` | `contactus@raahionrescue.com` |
-| `MAIL_FROM` | `Raahi <contactus@raahionrescue.com>` |
-| `COMPANY_LOGO_URL` | `https://www.raahionrescue.com/raahi-logo.png` |
-| `CORS_ORIGINS` | `raahionrescue.com` + Vercel URL |
+Then verify `raahionrescue.com` on Resend (add their DNS records in GoDaddy). Emails still send **from** `contactus@raahionrescue.com`.
+
+**Alternative — GoDaddy SMTP** (may not work on Vercel):
+
+| Variable | Value |
+|----------|-------|
+| `SMTP_PASS` | GoDaddy password for `contactus@raahionrescue.com` |
+| `SMTP_PORT` | `587` |
+| `SMTP_SECURE` | `false` |
 
 5. Click **Deploy**
 

@@ -16,8 +16,9 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function getSmtpStatus() {
-  return request('/smtp/status');
+export async function getSmtpStatus() {
+  const response = await fetch(`${API_BASE}/smtp/status`);
+  return response.json();
 }
 
 export function previewEmail(payload) {

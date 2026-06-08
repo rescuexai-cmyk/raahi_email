@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { env } from '../config/env.js';
-import { previewEmail, sendEmail, verifySmtpConnection } from '../services/email.service.js';
+import {
+  getEmailProviderStatus,
+  previewEmail,
+  sendEmail,
+  verifySmtpConnection,
+} from '../services/email.service.js';
 import { validateEmailPayload, validatePreviewPayload } from '../validators/email.validator.js';
 
 const router = Router();
@@ -9,18 +14,24 @@ router.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'raahi-email-api' });
 });
 
-router.get('/smtp/status', async (_req, res, next) => {
+router.get('/smtp/status', async (_req, res) => {
+  const config = getEmailProviderStatus();
+
   try {
     const smtp = await verifySmtpConnection();
-    res.json({ connected: true, smtp });
+    res.json({ connected: true, ...config, smtp });
   } catch (err) {
     res.status(503).json({
       connected: false,
+      ...config,
       error: err.message,
-      smtp: { host: env.smtp.host, port: env.smtp.port, user: env.smtp.user },
       hint: env.isDev
         ? 'For local dev, run Mailpit (SMTP on port 1025) or update SMTP_* in .env'
-        : 'Add SMTP_PASS (GoDaddy password for contactus@raahionrescue.com) in Vercel, then redeploy. Try SMTP_PORT=587 and SMTP_SECURE=false if needed.',
+        : config.resendConfigured
+          ? 'Resend API key is set but connection failed. Check RESEND_API_KEY in Vercel.'
+          : !config.passwordConfigured
+            ? 'SMTP_PASS is missing in Vercel. Add it under Settings → Environment Variables, then redeploy.'
+            : 'GoDaddy SMTP often blocks Vercel. Use RESEND_API_KEY instead (free at resend.com) — still sends from contactus@raahionrescue.com.',
     });
   }
 });

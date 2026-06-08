@@ -12,10 +12,10 @@ export default function Layout({ smtpStatus, children }) {
           >
             <span className="status-dot" />
             {smtpStatus.connected
-              ? `SMTP connected (${smtpStatus.smtp?.host}:${smtpStatus.smtp?.port})`
-              : window.location.hostname === 'localhost'
-                ? 'SMTP offline — start Mailpit for local sending'
-                : 'SMTP offline — add SMTP_PASS (GoDaddy password for contactus@raahionrescue.com) in Vercel and redeploy'}
+              ? smtpStatus.provider === 'resend'
+                ? 'Email ready (Resend) — sending as contactus@raahionrescue.com'
+                : `SMTP connected (${smtpStatus.smtp?.host}:${smtpStatus.smtp?.port})`
+              : smtpStatus.hint || smtpStatus.error || 'Email service offline'}
           </div>
         )}
       </header>
