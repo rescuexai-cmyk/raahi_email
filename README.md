@@ -86,12 +86,37 @@ Open http://localhost:5173 — compose an email, preview it, and send to Mailpit
 }
 ```
 
+## Deploy on Vercel
+
+This repo uses [Vercel Services](https://vercel.com/docs/services) to deploy frontend and backend together.
+
+1. Import [rescuexai-cmyk/raahi_email](https://github.com/rescuexai-cmyk/raahi_email) on Vercel
+2. Set **Application Preset** to **Services**
+3. Click **Refresh** (after `vercel.json` is in the repo)
+4. Add environment variables in Vercel → Settings → Environment Variables:
+
+| Variable | Required | Example |
+|----------|----------|---------|
+| `SMTP_HOST` | Yes | `smtp.resend.com` |
+| `SMTP_PORT` | Yes | `587` |
+| `SMTP_USER` | Yes | `resend` |
+| `SMTP_PASS` | Yes | your API key |
+| `MAIL_FROM` | Yes | `Raahi <hello@raahi.com>` |
+| `COMPANY_LOGO_URL` | No | auto-uses `https://<your-domain>/logos/raahi_logo.png` |
+| `CORS_ORIGINS` | No | auto-uses your Vercel URL |
+
+5. Click **Deploy**
+
+Routes on production:
+- Frontend: `https://<your-domain>/`
+- API: `https://<your-domain>/api/email/*`
+- Logo: `https://<your-domain>/logos/raahi_logo.png`
+
 ## Production notes
 
 - Set `SMTP_*` to your provider (SendGrid, AWS SES, Resend SMTP, etc.)
-- Host the logo at a public HTTPS URL (`COMPANY_LOGO_URL`)
+- Mailpit does not work on Vercel — use a real SMTP provider
 - Configure SPF, DKIM, and DMARC on your sending domain
-- Deploy backend and frontend independently (different hosts/CDNs)
 
 ## Scalability
 

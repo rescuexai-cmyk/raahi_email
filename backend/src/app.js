@@ -21,7 +21,9 @@ export function createApp() {
 
   app.use('/assets', express.static(path.resolve(__dirname, '../public')));
 
+  // Local dev uses /api/email; Vercel strips the /api routePrefix and forwards /email/*
   app.use('/api/email', emailRoutes);
+  app.use('/email', emailRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

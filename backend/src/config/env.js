@@ -7,16 +7,42 @@ function parseOrigins(value) {
     .filter(Boolean);
 }
 
+function getAppOrigin() {
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return `http://localhost:${Number(process.env.PORT) || 4000}`;
+}
+
+function getDefaultLogoUrl() {
+  if (process.env.COMPANY_LOGO_URL) {
+    return process.env.COMPANY_LOGO_URL;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/logos/raahi_logo.png`;
+  }
+  return `http://localhost:${Number(process.env.PORT) || 4000}/assets/logos/raahi_logo.png`;
+}
+
+function getDefaultCorsOrigins() {
+  if (process.env.CORS_ORIGINS) {
+    return process.env.CORS_ORIGINS;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return 'http://localhost:5173';
+}
+
 export const env = {
   port: Number(process.env.PORT) || 4000,
   nodeEnv: process.env.NODE_ENV || 'development',
   isDev: (process.env.NODE_ENV || 'development') !== 'production',
-  corsOrigins: parseOrigins(process.env.CORS_ORIGINS || 'http://localhost:5173'),
+  appOrigin: getAppOrigin(),
+  corsOrigins: parseOrigins(getDefaultCorsOrigins()),
   company: {
     name: process.env.COMPANY_NAME || 'Raahi',
-    logoUrl:
-      process.env.COMPANY_LOGO_URL ||
-      `http://localhost:${Number(process.env.PORT) || 4000}/assets/logos/raahi_logo.png`,
+    logoUrl: getDefaultLogoUrl(),
     address: process.env.COMPANY_ADDRESS || '',
     supportEmail: process.env.SUPPORT_EMAIL || 'hello@raahi.com',
     senderName: process.env.SENDER_NAME || 'Raahi Team',
